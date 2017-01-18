@@ -1,0 +1,283 @@
+<!doctype html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Rental Equipment</title>
+		<link rel="stylesheet" type="text/css" href="index.css" />
+	</head>
+	<body>
+		<header>
+			<ul class="nav clearFloat">
+				<li><h2><a href="#equipment">Equipment</a></h2></li>
+				<li><h2><a href="#users">Users</a></h2></li>
+			</ul>
+		</header>
+
+		<div id="content"></div>
+
+		<div class="notices"></div>
+
+		<script type="text/template" id="allUsers">
+			<h1>All Users</h1>
+
+			<div><button name="add">Add User</button></div>
+
+			<table>
+				<tbody>
+					{% for user in users %}
+						<tr>
+							<td><a href="#users/{{ user.id }}">{% if user.name %}{{ user.name }}{% else %}no name available{% endif %}</a></td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</script>
+
+		<script type="text/template" id="allEquipment">
+			<h1>
+				{% if category %}
+					{{ EquipmentCategories.getTextByID(category) }} Equipment
+				{% elseif tag %}
+					Equpment by tag: {{ tag }}
+				{% else %}
+					All Equipment
+				{% endif %}
+			</h1>
+
+			<div>
+				<button name="add">Add Equipment</button>
+				<button name="checkout" disabled="disabled">Checkout</button>
+			</div>
+
+			{% for category in equipmentByCategory %}
+				<a href="#equipment/category/{{ loop.key }}"><h2>{{ EquipmentCategories.getTextByID(loop.key) }}</h2></a>
+				<table>
+					<thead>
+						<tr>
+							<th>Name</th><th>Note</th><th>Available</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for equipment in category %}
+							<tr>
+								<td><input type="checkbox" value="{{ equipment.id }}" {% if equipment.userId %}disabled="disabled"{% endif %}/><a href="#equipment/{{ equipment.id }}">{% if equipment.name %}{{ equipment.name }}{% else %}no name available{% endif %}</a></td>
+								<td>{{ equipment.note }}</td>
+								<td class="{% if !equipment.userId %}available">Available{% else %}unavailable">Out{% endif %}</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			{% endfor %}
+		</script>
+
+		<script type="text/template" id="equipment">
+			<h1>{{ equipment.name }}</h1>
+			<form>
+				<table>
+					<tbody>
+						<tr>
+							<td>Name</td>
+							<td><input type="text" name="name" class="editable" value="{{ equipment.name }}" /></td>
+						</tr>
+						<tr>
+							<td>Available</td>
+							<td class="{% if !equipment.userId %}available"> ✓ {% else %}unavailable"> ✗ {% endif %}</td>
+						</tr>
+						<tr>
+							<td>Category</td>
+							<td>
+								<select name="category">
+									{% for category in categories %}
+										<option value="{{ category.id }}" {% if equipment.category == category.id %}selected="selected"{% endif %}>{{ category.text }}</option>
+									{% endfor %}
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>Tags</td>
+							<td class="tagsContainer">
+								<input type="text" name="tags" />
+								<div class="tagAutocomplete"></div>
+								<p class="tags">
+									{% for tag in equipment.tags %}
+										<span class="tag"><span class="content"><a href="#equipment/tag/{{ tag }}">{{ tag }}</a></span><span class="delete">x</span></span>
+									{% endfor %}
+								</p>
+							</td>
+						</tr>
+						{% if equipment.userId %}
+							<tr>
+								<td>Checked out by</td>
+								<td><a href="#users/{{ user.id }}">{{ user.name }}</a></td>
+							</tr>
+						{% endif %}
+						<tr>
+							<td>Note</td>
+							<td><textarea name="note" class="editable" >{{ equipment.note }}</textarea></td>
+						</tr>
+					</tbody>
+				</table>
+
+				<div>
+					{% if !equipment.userId %}
+						<button class="action" type="button" name="checkout">Checkout</button>
+						<button class="delete" type="button" name="delete" value="{{ equipment.id }}" >Delete</button>
+					{% else %}
+						<button class="action" type="button" name="return" >Check-in</button>
+					{% endif %}
+					<button name="save" type="submit" >Save</button>
+				</div>
+			</form>
+
+			{% if equipment.history %}
+				<h3>History</h3>
+				<table>
+					<thead>
+						<tr>
+							<td>User</td><td>Checked Out</td><td>Expected Back</td><td>Returned</td>
+						</tr>
+					</thead>
+					<tbody>
+						{% for history in allHistory %}
+							<tr>
+								<td>{{ history.userName }}</td>
+								<td>{{ history.checkoutDate | date('F jS, Y g:ia', templateVariables.timezoneOffset) }}</td>
+								<td>{{ history.expectedReturnDate | date('F jS, Y', templateVariables.timezoneOffset) }}</td>
+								{% if history.returnDate %}
+									<td>{{ history.returnDate | date('F jS, Y g:ia', templateVariables.timezoneOffset) }}</td>
+								{% else %}
+									<td>...</td>
+								{% endif %}
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			{% endif %}
+
+		</script>
+
+		<script type="text/template" id="user">
+			<h1>{{ user.name }}</h1>
+
+			<form>
+				<table>
+					<tbody>
+						<tr>
+							<td>Name</td>
+							<td><input type="text" name="name" value="{{ user.name }}" /></td>
+						</tr>
+					</tbody>
+				</table>
+
+				{% if equipment.length < 1 %}
+					<button name="delete" type="button" value="{{ user.id }}" >Delete</button>
+				{% endif %}
+				<button name="save" type="submit" >Save</button>
+			</form>
+
+			{% if equipment.length > 0 %}
+				<h2>Checked out equipment</h2>
+				<table>
+					<tbody>
+						{% for equip in equipment %}
+							<tr>
+								<td>Name</td>
+								<td><a href="#equipment/{{ equip.id}}" >{{ equip.name }}</a></td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			{% endif %}
+
+		</script>
+
+		<script type="text/template" id="addEquipment">
+			<h1>Add Equipment</h1>
+
+			<form name="addEquipment" action="#">
+				<div>
+					<label><span>Name</span><input type="text" name="name" required="true" /></label>
+				</div>
+				<div>
+					<label><span>Note</span><textarea name="note"></textarea></label>
+				</div>
+				<div>
+					<select name="category">
+						{% for category in EquipmentCategories.getCategories() %}
+							<option value="{{ category.id }}" {% if equipment.category == category.id %}selected="selected"{% endif %}>{{ category.text }}</option>
+						{% endfor %}
+					</select>
+				</div>
+				<div>
+					<button name="save" type="submit">Save</button>
+				</div>
+			</form>
+		</script>
+
+		<script type="text/template" id="addUser">
+			<h1>Add User</h1>
+
+			<form name="addUser" action="#">
+				<div>
+					<label><span>Name</span><input type="text" name="name" required="true" /></label>
+				</div>
+				<div>
+					<button name="save" type="submit">Save</button>
+				</div>
+			</form>
+		</script>
+
+		<script type="text/template" id="checkout">
+			<h1>Checkout</h1>
+
+			<p>You are about to checkout the following equipment</p>
+			<ol>
+				{% for equipment in allEquipment %}
+					<li>
+						<a href="#equipment/{{ equipment.id }}">{{ equipment.name }}</a>
+					</li>
+					<ul>
+						{% if equipment.category %}
+							<li>
+								<strong>Category:</strong> {{ EquipmentCategories.getTextByID(equipment.category) }}
+							</li>
+						{% endif %}
+						{% if equipment.note %}
+							<li>
+								<strong>Note:</strong> {{ equipment.note }}
+							</li>
+						{% endif %}
+					</ul>
+				{% endfor %}
+			</ol>
+
+			<form name="checkout">
+
+				<div>
+					Expected Return Date <input name="expectedReturnDate" type="date" required="true" min="{{ minDate }}" >
+				</div>
+
+				<div>
+					Expected Return Time <input name="expectedReturnTime" type="time" required="true" >
+				</div>
+
+				<div>
+					<select name="user" required="true">
+						<option value="" disabled selected>User</option>
+						{% for user in users %}
+							<option value="{{ user.id }}">{{ user.name }}</option>
+						{% endfor %}
+					</select>
+				</div>
+
+				<button type="submit">Checkout</button>
+			</form>
+
+		</script>
+
+		<script src="lib/jquery-2.1.0.min.js"></script>
+		<script src="lib/swig.pack.min.js"></script>
+		<script src="lib/underscore-min.js"></script>
+		<script src="index.js"></script>
+	</body>
+</html>

@@ -1,0 +1,27 @@
+{
+  "name": "inventory",
+  "version": "0.0.1",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "express": "4.14.0",
+    "express-hbs": "1.0.4",
+    "moment": "^2.17.1",
+    "nedb": "1.1.1",
+    "underscore": "1.8.0",
+    "ws": "1.1.1"
+  },
+  "scripts": {
+    "start": "node app.js"
+  },
+  "description": "inventory",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/williamhaley/inventory.git"
+  },
+  "keywords": [
+    "inventory"
+  ],
+  "author": "Will"
+}

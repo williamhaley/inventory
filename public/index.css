@@ -1,0 +1,269 @@
+/* global styles */
+
+body {
+	font-size: 20px;
+	font-family: 'arial';
+	margin: 0;
+	background: #eee;
+}
+
+a {
+	line-height: 1.4em;
+}
+
+header {
+	width: 100%;
+}
+
+header,
+#content {
+	background: #fff;
+}
+
+li {
+	list-style-type: none;
+}
+
+a {
+	text-decoration: none;
+	color: #00F;
+}
+
+select {
+	font-size: 1em;
+}
+
+a:hover {
+	color: #009;
+}
+
+ul {
+	margin: 0;
+}
+
+.clearFloat:before,
+.clearFloat:after {
+	content: " ";
+	display: table;
+}
+.clearFloat:after {
+	clear: both;
+}
+/* For IE 6/7 only */
+.clearFloat {
+	*zoom: 1;
+}
+
+
+table {
+	width: 100%;
+	border-spacing: 0;
+	border-collapse: collapse;
+	table-layout: fixed;
+}
+
+button:disabled {
+	background: #eee;
+	color: #aaa;
+}
+
+input[type="checkbox"] {
+	margin-right: 1em;
+}
+
+th {
+	font-weight: bold;
+}
+
+td,
+th {
+	padding: 0.5em;
+	text-align: left;
+}
+
+#content {
+	margin: 1em;
+	border-radius: 10px;
+	padding: 1em;
+}
+
+input[type="text"],
+textarea {
+	border-radius: 5px;
+	border: 1px solid #888;
+	font-size: 1em;
+	font-family: inherit;
+	width: 100%;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+input[type="text"] {
+	padding-left: 0.5em;
+	height: 2em;
+}
+
+textarea {
+	padding: 0.5em;
+	min-height: 5em;
+	height: auto;
+}
+
+form label,
+form label span {
+	display: block;
+}
+
+form label span {
+	margin-bottom: 0.5em;
+}
+
+form {
+	background: #eee;
+	padding: 0.5em 1em;
+}
+
+button {
+	border-radius: 5px;
+	background: #fff;
+	border: 1px solid #111;
+	padding: 0.5em 1em;
+	font-size: 1em;
+}
+
+form div {
+	margin: 1em 0;
+}
+
+td {
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+thead {
+	border-bottom: 2px solid #eee;
+}
+
+tr:nth-child(even) {
+	background: #eee;
+}
+
+.nav {
+	padding-left: 2em;
+}
+
+.nav li {
+	float: left;
+}
+
+.nav li:not(:first-child) {
+	padding-left: 1em;
+}
+
+/* page specific */
+
+.available {
+	color: #2f2;
+}
+
+.unavailable {
+	color: #f00;
+}
+
+button.action {
+	background: #0f8;
+}
+
+button.delete {
+	background: #f00;
+}
+
+.notices {
+	color: #000;
+	position: fixed;
+	top: -200px; /* this is kind of risky */
+	right: 0px;
+	width: 50%;
+	padding: 1em;
+	border: 0.2em solid skyblue;
+	margin-right: 1em;
+	border-top: 0;
+	font-size: 2em;
+	background-color: rgba(233, 233, 233, 0.97);
+}
+
+.tag {
+	background: #eee;
+	border: 1px solid #111;
+	border-radius: 5px;
+	padding: 0em 0.5em 0.25em;
+	margin-right: 0.5em;
+	margin-bottom: 0.5em;
+	display: inline-block;
+}
+
+.tag .delete {
+	color: #f00;
+	vertical-align: super;
+	padding-left: 0.5em;
+}
+
+.tags {
+	white-space: normal;
+}
+
+.tagsContainer {
+	overflow: inherit;
+}
+
+.tagAutocomplete {
+	position: relative;
+	margin: 0;
+}
+
+.tagAutocomplete ul {
+	width: 100%;
+	box-sizing: border-box;
+	padding: 0;
+	position: absolute;
+	background: #fff;
+	border: 1px solid #010;
+	color: #088;
+}
+
+.tagAutocomplete li {
+	padding: 0.5em;
+}
+
+.tagAutocomplete li:hover,
+.tagAutocomplete li:nth-child(even):hover {
+	background: #008;
+	color: #fff;
+}
+
+.tagAutocomplete li:nth-child(even) {
+	background: #eee;
+}
+
+.all.equipment th:first-child,
+.all.equipment td:first-child {
+	width: 200px;
+}
+
+.all.equipment th:last-child,
+.all.equipment td:last-child {
+	width: 100px;
+}
+
+.equipment td:first-child {
+	width: 150px;
+}
+
+.checkout ol li {
+	list-style-type: decimal;
+}
+
+.checkout ul li {
+	list-style-type: circle;
+}
