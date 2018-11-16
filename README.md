@@ -1,7 +1,15 @@
 # Inventory
 
+# Run
+
 ```
-go run main.go
+go run cmd/main.go
+```
+
+# Build
+
+```
+go build -v -o inventory
 ```
 
 # Dependencies
